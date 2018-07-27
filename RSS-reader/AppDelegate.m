@@ -15,6 +15,10 @@
 
 @implementation AppDelegate
 
+-(NSManagedObjectContext*)managedObjectContext {
+    return self.persistentContainer.viewContext;
+}
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     CGRect frame = UIScreen.mainScreen.bounds;

@@ -50,6 +50,19 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
     [super viewDidLoad];
     
     self.title = @"Категории";
+    
+    UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
+    self.navigationItem.leftBarButtonItem = settings;
+//    HTML_parser* html = [[HTML_parser alloc] init];
+//     [html doURLSession:^(NSArray *destinationUrl) {
+//        NSLog(@"INSIDE BLOCK;");
+//         self.res = destinationUrl;
+//         NSLog(@"%@",self.res);
+//    }];
+    
+        
+//    NSArray *anotherArray = [results subarrayWithRange:NSMakeRange(1, 15)];
+//    NSLog(@"%@",anotherArray);
 //    HTML_parser* parser = [[HTML_parser alloc] init];
 //    NSArray *resultsRSS = [parser doURLSession];
 //    NSLog(@"%@",resultsRSS);
@@ -113,10 +126,24 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     //NSLog(@"You've tapped on %@",self.dataSource[indexPath.row]);
+    
+//        HTML_parser* html = [[HTML_parser alloc] init];
+//        [html doURLSession:^(NSArray *destinationUrl) {
+//            NSLog(@"INSIDE BLOCK %@",destinationUrl);
+//            NSLog(@"Urls are %@",destinationUrl);
+//            NSArray *resultsForParsing = [destinationUrl subarrayWithRange:NSMakeRange(2, 15)];
+//            NSLog(@"%@",resultsForParsing);
+//            ListOfNews *news = [[ListOfNews alloc] init];
+//            self.dataSource[indexPath.row] = resultsForParsing[indexPath.row];
+//            news.url = resultsForParsing[indexPath.row];
+//            [self.navigationController pushViewController:news animated:YES];
+//        }];
+    
+    
     ListOfNews *news = [[ListOfNews alloc] init];
     self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
-    NSLog(@"%@",_urlsForParsing);
-    NSLog(@"%@",self.urlsForParsing[indexPath.row]);
+//    NSLog(@"%@",_urlsForParsing);
+//    NSLog(@"%@",self.urlsForParsing[indexPath.row]);
     news.url = self.urlsForParsing[indexPath.row];
 //    ListOfNews *news = [[ListOfNews alloc] init];
 //

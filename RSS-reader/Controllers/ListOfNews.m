@@ -10,6 +10,14 @@
 #import "HTML-parser.h"
 #import "ListOfNewsTableViewCell.h"
 #import "NewsDetailViewController.h"
+#import "AppDelegate.h"
+#import "FavoritesViewController.h"
+
+static NSString* const kEntityName = @"Favourites";
+static NSString* const kAttributeLinkName = @"link";
+static NSString* const kAttributeTitleName = @"title";
+static NSString* const kAttributePubDateName = @"pubDate";
+static NSString* const kAttributeImageLinkName = @"imageLink";
 
 @interface ListOfNews (){
     NSXMLParser *parser;
@@ -33,10 +41,23 @@
     }
     return _rssTableView;
 }
+-(NSManagedObjectContext*)managedObjectContext{
+    AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    return [delegate managedObjectContext];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Новости";
+    
+        
+
+//    UIBarButtonItem *st = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"bookmark1.png"] style:UIBarButtonItemStyleDone target:self action:@selector(bookmarkClicked)];
+    UIBarButtonItem *bookmark = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(bookmarkClicked)];
+  
+    
+    self.navigationItem.rightBarButtonItem = bookmark;
+    //self.navigationItem.rightBarButtonItem = st1;
     
 //    HTML_parser* parser = [[HTML_parser alloc] init];
 //    NSArray *resultsRSS = [parser doURLSession];
@@ -67,9 +88,14 @@
     [parser parse];
 }
 
+-(void)bookmarkClicked{
+    FavoritesViewController *fav = [[FavoritesViewController alloc] init];
+    
+    [self.navigationController pushViewController:fav animated:YES];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
 }
 
 
@@ -81,18 +107,36 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    
+    self.news = [feeds objectAtIndex:indexPath.row];
+    
+//    NSLog(@"Object is %@",self.news);
+//    NSLog(@"link is %@", self.news.link);
+    
     if(cell == nil){
         cell = [[ListOfNewsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
     }
     
-    cell.textLabel.text = [[feeds objectAtIndex:indexPath.row] objectForKey:@"title"];
-    cell.detailTextLabel.text = [[feeds objectAtIndex:indexPath.row] objectForKey:@"dates"];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = self.news.title;
+    cell.detailTextLabel.text = self.news.pubDate;
+    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                   // cell.backgroundColor = [UIColor greenColor];
+                    UIButton *starButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    starButton.tag = indexPath.row;
+                    //[starButton setTitle:@"Some title" forState:UIControlStateNormal];
+                    [starButton setFrame:CGRectMake(0, 0, 30, 30)];
+    [starButton setTintColor:[UIColor grayColor]];
     
 
-    //image loading
-    NSString *imageUrl = [[feeds objectAtIndex:indexPath.row] objectForKey:@"imageLink"];
+    [starButton setImage:[UIImage imageNamed:@"star1.png"] forState:UIControlStateNormal];
+    [starButton addTarget:self action:@selector(handleMarkAsFavourite:) forControlEvents:UIControlEventTouchUpInside];
+    cell.accessoryView = starButton;
+    
+    [self saveButtonState:starButton];
+//    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 
+    //image loading
+    NSString *imageUrl = self.news.imageLink;
     if(imageUrl){
         cell.imageView.image = nil;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -100,59 +144,100 @@
                     UIImage *image = [[UIImage alloc] initWithData:imageData];
                     dispatch_sync(dispatch_get_main_queue(), ^{
                         cell.imageView.image = image;
-//                        NSLog(@"Size of image:width - %f height - %f",cell.imageView.image.size.width,cell.imageView.image.size.height);
                         [cell setNeedsLayout];
-                        
-
-
                     });
                 });
     }
 
     
     //date formatting
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     //[dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-    [dateFormatter setDateStyle:@"E, d MMM yyyy HH:mm:ss Z"];
-    NSDate *pubDate = [dateFormatter dateFromString:imageLink];
+    //[dateFormatter setDateStyle:@"E, d MMM yyyy HH:mm:ss Z"];
+    //NSDate *pubDate = [dateFormatter dateFromString:imageLink];
     //NSLog(@"%@",pubDate);
     return cell;
 }
-//- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
-//    NSLog(@" accessoryButton Tapped!!!");
-//}
+
+-(void)saveButtonState:(UIButton*)sender{
+//    UIColor *colorForStarButton = [UIColor colorWithRed:252.0 green:194.0 blue:0.f alpha:1.0];
+//    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+//    if(![sender isTouchInside]){
+//        //[userPreferences setObject:@"notTouched" forKey:@"stateOfButton"];
+//        [userPreferences setObject:[UIColor grayColor] forKey:@"stateOfButton"];
+//
+//        sender.tintColor = [UIColor grayColor];
+//    }
+//    sender.tintColor = colorForStarButton;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:sender.hidden forKey:@"isHidden"];
+}
+
+-(void)handleMarkAsFavourite:(UIButton*)sender {
+    
+    UIColor *colorForStarButton = [UIColor colorWithRed:252.0 green:194.0 blue:0.f alpha:1.0];
+    //sender.tintColor = colorForStarButton;
+    
+    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+    if(![sender isTouchInside]){
+        //[userPreferences setObject:@"notTouched" forKey:@"stateOfButton"];
+        sender.tintColor = [UIColor grayColor];
+    } else if ([sender isTouchInside]){
+        //[userPreferences setObject:@"isTouchInside" forKey:@"stateOfButton"];
+        sender.tintColor = colorForStarButton;
+    }
+//    sender.tintColor = colorForStarButton;
+//    [userPreferences setObject:@"isTouchInside" forKey:@"stateOfButton"];
+    
+//    NSString *value = @"isTouchInside";
+//    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+//    if(![sender isTouchInside]){
+//        value = @"isNotTouchInside";
+//        [userPreferences setObject:value forKey:@"stateOfButton"];
+//    }
+//    [userPreferences setObject:value forKey:@"stateOfButton"];
+//    if([sender isTouchInside]){
+//        NSLog(@"isSelected");
+//   }
+   
+    
+    NSLog(@"Star is clicked");
+    NSLog(@"I clicked a button %ld",sender.tag + 1);
+//    sender.backgroundColor = [UIColor yellowColor];
+    
+    self.news = [feeds objectAtIndex:sender.tag];
+//    NSLog(@"Title is %@",self.news.title);
+//    NSLog(@"Link is %@",self.news.link);
+//    NSLog(@"Date is %@",self.news.pubDate);
+//    NSLog(@"Image link is %@",self.news.imageLink);
+    
+    
+    NSManagedObject *partOfNewsForCoreData = [NSEntityDescription insertNewObjectForEntityForName:kEntityName inManagedObjectContext:[self managedObjectContext]];
+    [partOfNewsForCoreData setValue:self.news.title forKey:kAttributeTitleName];
+    [partOfNewsForCoreData setValue:self.news.link forKey:kAttributeLinkName];
+    [partOfNewsForCoreData setValue:self.news.pubDate forKey:kAttributePubDateName];
+    [partOfNewsForCoreData setValue:self.news.imageLink forKey:kAttributeImageLinkName];
+
+    NSError *error = nil;
+    if(![[self managedObjectContext] save:&error]){
+                NSLog(@"Problems with CoreData - %@",[error localizedDescription]);
+            }
+   
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     NewsDetailViewController *newsDetailController = [[NewsDetailViewController alloc] init];
-    
-    newsDetailController.linkToDownload = [[feeds objectAtIndex:indexPath.row]
-                                           objectForKey:@"link"];
-    NSLog(@"%@",[[feeds objectAtIndex:indexPath.row]
-                 objectForKey:@"link"]);
+    newsDetailController.linkToDownload = self.news.link;
+    NSLog(@"%@",self.news.link);
     [self.navigationController pushViewController:newsDetailController animated:YES];
     NSLog(@"Tapped!!!");
 }
 
-- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewRowAction *more = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"More" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        NSLog(@"More Button pressed");
-    }];
-    more.backgroundColor = [UIColor lightGrayColor];
-    
-    UITableViewRowAction *favourites = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Favourites" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        NSLog(@"Favorites Button pressed");
-    }];
-    favourites.backgroundColor = [UIColor orangeColor];
-    
-    
-    UITableViewRowAction *share = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"Share" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        NSLog(@"Share Button pressed");
-    }];
-    share.backgroundColor = [UIColor blueColor];
-    NSArray *returnArray = [NSArray arrayWithObjects:more,favourites,share, nil];
-    return returnArray;
-}
+
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict{
+    
     element=elementName;
     
     if([element isEqualToString:@"item"]){
@@ -169,6 +254,10 @@
         [imageLink appendString:urlString];
         //NSLog(@"imageLink - %@",imageLink);
         //NSLog(@"urlString -  %@",urlString);
+    }
+    if ([element isEqualToString:@"media:content"]){
+        NSString *urlString = [attributeDict objectForKey:@"url"];
+        //NSLog(@"%@",urlString);
     }
 }
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
@@ -197,7 +286,9 @@
         [item setObject:imageLink forKey:@"imageLink"];
         //NSLog(@"%@",item);
         
-        [feeds addObject:[item copy]];
+        PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
+        [feeds addObject:news];
+        
     }
 }
 -(void)parserDidEndDocument:(NSXMLParser *)parser{

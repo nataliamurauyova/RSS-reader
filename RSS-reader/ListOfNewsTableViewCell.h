@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ListOfNews.h"
 
 @interface ListOfNewsTableViewCell : UITableViewCell
+@property(nonatomic) ListOfNews* link;
+@property(nonatomic) UIButton* star;
 
+
+//-(NSIndexPath*) getIndexPath;
 @end

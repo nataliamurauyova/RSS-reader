@@ -89,7 +89,19 @@
     [loadingView setHidden:YES];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
-    NSLog(@"Error - %@",error);
+    [loadingView setHidden:YES];
+    UILabel *errorLabel = [[UILabel alloc] initWithFrame:CGRectMake(150, 450, 200, 60)];
+    [errorLabel setText:@"Sorry, there're some problems with network."];
+    [errorLabel setNumberOfLines:3];
+    [self.view addSubview:errorLabel];
+    errorLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [errorLabel.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                              [errorLabel.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+                                              [errorLabel.widthAnchor constraintEqualToConstant:150],
+                                              [errorLabel.heightAnchor constraintEqualToConstant:150]
+                                              ]];
+    NSLog(@"Error - %@",[error localizedDescription]);
 }
 
 
