@@ -9,19 +9,7 @@
 #import "ListOfNewsTableViewCell.h"
 
 @implementation ListOfNewsTableViewCell
--(NSIndexPath*) getIndexPath{
-    return [[self getTableView] indexPathForCell:self];
-}
--(UITableView*)getTableView{
-    UIView *superView = self.superview;
-    while (superView && ![superView isKindOfClass:[UITableView class]]) {
-        superView = superView.superview;
-    }
-    if (superView){
-        return (UITableView*)superView;
-    }
-    return nil;
-}
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -36,6 +24,7 @@
 
    
         [super layoutSubviews];
+    
         float desiredWidth = 70;
         float w = self.imageView.frame.size.width;
         if(w>desiredWidth){

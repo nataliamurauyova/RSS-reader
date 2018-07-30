@@ -45,7 +45,19 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     return [delegate managedObjectContext];
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    UIColor *colorForStarButton = [UIColor colorWithRed:252.0 green:194.0 blue:0.f alpha:1.0];
+    NSString *butState = [[NSUserDefaults standardUserDefaults] stringForKey:@"stateOfButton"];
+    if([butState compare:@"starTouched"] == NSOrderedSame) {
+        self.star.tintColor == colorForStarButton;
+    } else {
+        self.star.tintColor == [UIColor grayColor];
+    }
+    
+    NSLog(@"viewWillAppear");
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Новости";
@@ -117,28 +129,38 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
         cell = [[ListOfNewsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
     }
     
+
+    //NSLog(@"%@",self.news.pubDate);
+    NSString *formattedString = [self.news.pubDate substringWithRange:NSMakeRange(4, 18)];
+    //NSLog(@"%@",formattedString);
     cell.textLabel.text = self.news.title;
-    cell.detailTextLabel.text = self.news.pubDate;
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                   // cell.backgroundColor = [UIColor greenColor];
-                    UIButton *starButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    starButton.tag = indexPath.row;
-                    //[starButton setTitle:@"Some title" forState:UIControlStateNormal];
-                    [starButton setFrame:CGRectMake(0, 0, 30, 30)];
-    [starButton setTintColor:[UIColor grayColor]];
+    cell.detailTextLabel.text = formattedString;
+
+    self.star = [UIButton buttonWithType:UIButtonTypeSystem];
+  
+    self.star.tag = indexPath.row;
+    //self.star.tag = self.star.isTouchInside;
+    
+    
+    [self.star setFrame:CGRectMake(0, 0, 30, 30)];
+    [self.star setTintColor:[UIColor grayColor]];
+    [self.star setAlpha:0.25];
     
 
-    [starButton setImage:[UIImage imageNamed:@"star1.png"] forState:UIControlStateNormal];
-    [starButton addTarget:self action:@selector(handleMarkAsFavourite:) forControlEvents:UIControlEventTouchUpInside];
-    cell.accessoryView = starButton;
+    [self.star setImage:[UIImage imageNamed:@"star1.png"] forState:UIControlStateNormal];
+    [self.star addTarget:self action:@selector(handleMarkAsFavourite:) forControlEvents:UIControlEventTouchUpInside];
+    cell.accessoryView = self.star;
     
-    [self saveButtonState:starButton];
+//    self.star = starButton;
+    [self saveButtonState:self.star];
+    [self resaveButtonState:self.star];
 //    [cell setAccessoryType:UITableViewCellAccessoryCheckmark];
 
     //image loading
     NSString *imageUrl = self.news.imageLink;
     if(imageUrl){
-        cell.imageView.image = nil;
+        cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+        
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageUrl]];
                     UIImage *image = [[UIImage alloc] initWithData:imageData];
@@ -149,13 +171,6 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
                 });
     }
 
-    
-    //date formatting
-    //NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //[dateFormatter setTimeStyle:NSDateFormatterLongStyle];
-    //[dateFormatter setDateStyle:@"E, d MMM yyyy HH:mm:ss Z"];
-    //NSDate *pubDate = [dateFormatter dateFromString:imageLink];
-    //NSLog(@"%@",pubDate);
     return cell;
 }
 
@@ -169,12 +184,40 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 //        sender.tintColor = [UIColor grayColor];
 //    }
 //    sender.tintColor = colorForStarButton;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:sender.hidden forKey:@"isHidden"];
-}
-
--(void)handleMarkAsFavourite:(UIButton*)sender {
+//    NSString *isTouched = @"isTouchInside";
+//    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+//    if(![sender isTouchInside]){
+//        isTouched = @"isNotTouchInside";
+//
+//    }
+//    if([sender.tintColor == ])
+//    [defaults setBool:sender.hidden forKey:@"isHidden"];
+//    self.news = [feeds objectAtIndex:sender.tag];
+//    NSLog(@"Star is clicked");
+//    NSLog(@"I clicked a button %ld",sender.tag + 1);
     
+//   NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+//    NSString *butState = @"starTouched";
+//    if(!(sender.tintColor == colorForStarButton)){
+//        butState = @"starNotTouched";
+//        [userPreferences setObject:butState forKey:@"stateOfButton"];
+//    }
+//    [userPreferences setObject:butState forKey:@"stateOfButton"];
+   
+//    sender.alpha = [userPreferences floatForKey:[NSString stringWithFormat:@"alpha%ld",(long)sender.tag]];
+//    [userPreferences setFloat:sender.alpha forKey:[NSString stringWithFormat:@"alpha%ld",(long)sender.tag]];
+//    NSLog(@"saveButtonState");
+    //[self.rssTableView reloadData];
+    //NSLog(@"saveButtonState");
+}
+-(void)resaveButtonState:(UIButton*)sender{
+    NSUserDefaults *userPreferences = [NSUserDefaults standardUserDefaults];
+    sender.alpha = [userPreferences floatForKey:[NSString stringWithFormat:@"alpha%ld",(long)sender.tag]];
+}
+-(void)handleMarkAsFavourite:(UIButton*)sender {
+    if(sender.isTouchInside){
+        NSLog(@"Selected");
+    }
     UIColor *colorForStarButton = [UIColor colorWithRed:252.0 green:194.0 blue:0.f alpha:1.0];
     //sender.tintColor = colorForStarButton;
     
@@ -201,8 +244,8 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 //   }
    
     
-    NSLog(@"Star is clicked");
-    NSLog(@"I clicked a button %ld",sender.tag + 1);
+//    NSLog(@"Star is clicked");
+//    NSLog(@"I clicked a button %ld",sender.tag + 1);
 //    sender.backgroundColor = [UIColor yellowColor];
     
     self.news = [feeds objectAtIndex:sender.tag];

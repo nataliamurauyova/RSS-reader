@@ -7,6 +7,7 @@
 //
 
 #import "XMLParser.h"
+#import "PartOfNews.h"
 
 @interface XMLParser () {
     NSXMLParser *parser;
@@ -24,6 +25,7 @@
 @implementation XMLParser
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict{
+    
     element=elementName;
     
     if([element isEqualToString:@"item"]){
@@ -40,6 +42,10 @@
         [imageLink appendString:urlString];
         //NSLog(@"imageLink - %@",imageLink);
         //NSLog(@"urlString -  %@",urlString);
+    }
+    if ([element isEqualToString:@"media:content"]){
+        NSString *urlString = [attributeDict objectForKey:@"url"];
+        //NSLog(@"%@",urlString);
     }
 }
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
@@ -68,7 +74,9 @@
         [item setObject:imageLink forKey:@"imageLink"];
         //NSLog(@"%@",item);
         
-        [feeds addObject:[item copy]];
+        PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
+        [feeds addObject:news];
+        
     }
 }
 -(void)parserDidEndDocument:(NSXMLParser *)parser{

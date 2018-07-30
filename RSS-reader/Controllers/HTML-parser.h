@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface HTML_parser : NSObject
-@property(strong,nonatomic)NSArray* result;
+@property(strong,nonatomic)NSMutableArray* result;
 
--(NSArray*) doURLSession:(void(^)(NSArray *destinationUrl))complition;
--(void) downloadURL:(void(^)(NSArray *destinationUrl))complition;
+-(NSArray*) doURLSession:(void(^)(NSMutableArray *destinationUrl))complition;
+//-(void) downloadURL:(void(^)(NSArray *destinationUrl))complition;
 @end
