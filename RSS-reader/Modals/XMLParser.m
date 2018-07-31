@@ -31,8 +31,7 @@
     [parser setDelegate:self];
     [parser setShouldResolveExternalEntities:NO];
     [parser parse];
-//    PartOfNews *news = [[PartOfNews alloc] init];
-//    news = self.news;
+
     return feeds;
 }
 
@@ -66,9 +65,6 @@
         //        if ([element isEqualToString:@"img"]) {
         [dates appendString:string];
         //    }
-    } else if ([element isEqualToString:@"enclosure"]){
-        //        NSString *urlString = string;
-        //        NSLog(@"%@",urlString);
     }
 }
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
@@ -80,13 +76,12 @@
         
         
         PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
-        //self.news = news;
         [feeds addObject:news];
         
     }
 }
 -(void)parserDidEndDocument:(NSXMLParser *)parser{
-    //[self.rssTableView reloadData];
+    
 }
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError{
     NSLog(@"%@",[parseError localizedDescription]);

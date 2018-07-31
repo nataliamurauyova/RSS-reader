@@ -11,7 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface NewsDetailViewController : UIViewController <UIWebViewDelegate>
-//@property(nonatomic) UIWebView *webView;
+
 @property(nonatomic) NSString *linkToDownload;
 @property(nonatomic) UIActivityIndicatorView *activityIndicator;
 

@@ -10,7 +10,6 @@
 #import "PartOfNews.h"
 
 @interface XMLParser : NSObject <NSXMLParserDelegate>
-@property(nonatomic) PartOfNews* news;
 
 -(NSMutableArray*)parseXML:(NSString*) urlForXML;
 

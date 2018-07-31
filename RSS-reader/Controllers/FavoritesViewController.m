@@ -65,12 +65,12 @@ static NSString* const kEntityName = @"Favourites";
     if(cell == nil){
         cell = [[ListOfNewsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
     }
-     //self.favNews = [self.news objectAtIndex:indexPath.row];
+     
     NSManagedObject *partOfNews = [self.news objectAtIndex:indexPath.row];
     
    
     cell.textLabel.text = [partOfNews valueForKey:@"title"];
-    cell.detailTextLabel.text = [partOfNews valueForKey:@"pubDate"];
+    cell.detailTextLabel.text = [[partOfNews valueForKey:@"pubDate"] substringWithRange:NSMakeRange(4, 18)];
     
     NSString *imageUrl = [partOfNews valueForKey:@"imageLink"];
     if(imageUrl){
@@ -117,7 +117,7 @@ static NSString* const kEntityName = @"Favourites";
         [self.news removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         ListOfNews *vc = [[ListOfNews alloc] init];
-        vc.star.tintColor = [UIColor grayColor];
+        
     }
 }
 

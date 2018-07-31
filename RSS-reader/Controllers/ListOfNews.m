@@ -153,12 +153,7 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 -(void)handleMarkAsFavourite:(UIButton*)sender {
 
     self.news = [self.feeds objectAtIndex:sender.tag];
-//    NSLog(@"Title is %@",self.news.title);
-//    NSLog(@"Link is %@",self.news.link);
-//    NSLog(@"Date is %@",self.news.pubDate);
-//    NSLog(@"Image link is %@",self.news.imageLink);
-    
-    
+
     NSManagedObject *partOfNewsForCoreData = [NSEntityDescription insertNewObjectForEntityForName:kEntityName inManagedObjectContext:[self managedObjectContext]];
     [partOfNewsForCoreData setValue:self.news.title forKey:kAttributeTitleName];
     [partOfNewsForCoreData setValue:self.news.link forKey:kAttributeLinkName];

@@ -19,7 +19,7 @@ static NSString* const kCellIdentifier = @"Cell";
 @property(nonatomic) NSMutableArray *urlsForParsing;
 @property(strong,nonatomic) NSURL* destinationURL;
 @property(strong,nonatomic) NSArray* result;
-
+@property (nonatomic) NSMutableArray *sections;
 
 @end
 
@@ -48,6 +48,12 @@ static NSString* const kCellIdentifier = @"Cell";
         _urlsForParsing = [[NSMutableArray alloc] init];
     }
     return _urlsForParsing;
+}
+-(NSMutableArray*)sections{
+    if(!_sections){
+        _sections = [NSMutableArray arrayWithObjects:@"Новости по рубрикам", @"Новости регионов",@"Новости REALTY.TUT.BY",@"Новости SPORT.TUT.BY",@"Новости AUTO.TUT.BY",@"Новости LADY.TUT.BY",@"Новости 42.TUT.BY",@"Новости TVSET.TUT.BY",nil];
+    }
+    return _sections;
 }
 
 - (void)viewDidLoad {
@@ -96,7 +102,7 @@ static NSString* const kCellIdentifier = @"Cell";
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 1;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -122,7 +128,7 @@ static NSString* const kCellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
     ListOfNews *news = [[ListOfNews alloc] init];
-    //self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
+    self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
     news.url = self.urlsForParsing[indexPath.row];
 
     

@@ -10,13 +10,10 @@
 #import "ViewController.h"
 #import "NSString + NSStringAddition.h"
 
-static NSString *const begin = @"<li class=\"lists__li lists__li_head\">";
-static NSString *const end1 = @"main-shd";
-static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
+static NSString *const kListBegin = @"<li class=\"lists__li lists__li_head\">";
+static NSString *const kListEnd = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
 static NSString* const kURLStart = @"a href=\"";
 static NSString* const kURLEnd = @"\">";
-static NSString* const kNameStart = @".rss\">";
-static NSString* const kNameEnd = @"</a>";
 
 @interface HTML_parser()
 @property(assign,nonatomic) BOOL flag;
@@ -48,10 +45,11 @@ static NSString* const kNameEnd = @"</a>";
         NSLog(@"%@", location);
         [fileManager copyItemAtURL:location toURL:destinationUrl error:&err];
         self.destinationURL = destinationUrl;
-        NSLog(@"%@", self.destinationURL);
+        //NSLog(@"%@", self.destinationURL);
         NSData *data = [[NSData alloc] initWithContentsOfURL:destinationUrl];
         NSString *resStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSMutableArray *str = [resStr stringsBetweenString:begin andString:end];
+        NSMutableArray *str = [resStr stringsBetweenString:kListBegin andString:kListEnd];
+        //NSLog(@"%@",str);
         NSString *strFromArr = [str componentsJoinedByString:@" "];
         self.result = [strFromArr stringsBetweenString:kURLStart andString:kURLEnd];
         //NSLog(@"%@",self.result);

@@ -10,19 +10,9 @@
 
 @implementation ListOfNewsTableViewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
 -(void)layoutSubviews{
 
-   
         [super layoutSubviews];
     
         float desiredWidth = 70;
@@ -34,29 +24,9 @@
             self.detailTextLabel.frame = CGRectMake(self.detailTextLabel.frame.origin.x-subWidth,self.detailTextLabel.frame.origin.y,self.detailTextLabel.frame.size.width+subWidth,self.detailTextLabel.frame.size.height);
             self.imageView.contentMode = UIViewContentModeScaleAspectFit;
             
-//            UIButton *starButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//            //[starButton setTitle:@"Some title" forState:UIControlStateNormal];
-//            [starButton setFrame:CGRectMake(0, 0, 30, 30)];
-//            [starButton setTintColor:[UIColor grayColor]];
-//            [starButton setImage:[UIImage imageNamed:@"star1.png"] forState:UIControlStateNormal];
-//            [starButton addTarget:self action:@selector(handleMarkAsFavourite) forControlEvents:UIControlEventTouchUpInside];
-//            self.accessoryView = starButton;
-//                self.backgroundColor = [UIColor greenColor];
-//                UIButton *starButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//                [starButton setTitle:@"Some title" forState:UIControlStateNormal];
-//                [starButton setFrame:CGRectMake(0, 0, 10, 10)];
-//                self.accessoryView = starButton;
-
-//            self.imageView.layer.shadowPath =
         }
        [self.contentView layoutIfNeeded];
     
-
-//    self.backgroundColor = [UIColor greenColor];
-//    UIButton *starButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [starButton setTitle:@"Some title" forState:UIControlStateNormal];
-//    [starButton setFrame:CGRectMake(0, 0, 50, 50)];
-//    self.accessoryView = starButton;
     
 }
 
