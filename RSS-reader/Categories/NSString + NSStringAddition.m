@@ -58,9 +58,7 @@
         }
         
     }
-    //NSLog(@"FROM METHOD %@",strings);
-    NSString *str = [strings componentsJoinedByString:@" "];
-    //NSLog(@"FROM METHOD %@",str);
+   
     
     return strings;
     

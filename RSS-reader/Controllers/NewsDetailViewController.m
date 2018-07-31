@@ -19,8 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    NSLog(@"%@",self.linkToDownload);
-    
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height)];
     [self.view addSubview:webView];
     webView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -38,7 +36,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
     
-//    loadingView = [[UIView alloc]initWithFrame:CGRectMake(150, 400, 80, 80)];
+
     loadingView = [[UIView alloc] init];
     loadingView.backgroundColor = [UIColor colorWithWhite:0. alpha:0.6];
     loadingView.layer.cornerRadius = 5;
@@ -84,8 +82,6 @@
     [loadingView setHidden:NO];
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
-//    [self.activityIndicator stopAnimating];
-//    self.activityIndicator.hidesWhenStopped = YES;
     [loadingView setHidden:YES];
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{

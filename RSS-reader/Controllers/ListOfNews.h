@@ -11,6 +11,7 @@
 
 @interface ListOfNews : UIViewController <UITableViewDelegate, UITableViewDataSource,NSXMLParserDelegate>
 @property(nonatomic) UITableView *rssTableView;
+@property(nonatomic)NSMutableArray *feeds;
 @property(nonatomic)NSString* url;
 @property(nonatomic) NSString *linkOfImage;
 @property(nonatomic) PartOfNews* news;

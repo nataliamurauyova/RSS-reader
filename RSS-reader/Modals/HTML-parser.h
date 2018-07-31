@@ -11,6 +11,7 @@
 @interface HTML_parser : NSObject
 @property(strong,nonatomic)NSMutableArray* result;
 
--(NSArray*) doURLSession:(void(^)(NSMutableArray *destinationUrl))complition;
-//-(void) downloadURL:(void(^)(NSArray *destinationUrl))complition;
+
+-(NSArray*) getUrlsForParsing:(void(^)(NSMutableArray *parseURLs))complition;
+
 @end

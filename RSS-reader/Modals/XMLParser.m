@@ -23,6 +23,18 @@
 @end
 
 @implementation XMLParser
+- (NSMutableArray *)parseXML:(NSString*) urlForXML{
+    feeds = [[NSMutableArray alloc] init];
+    NSURL *url = [NSURL URLWithString:urlForXML];
+    parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
+    
+    [parser setDelegate:self];
+    [parser setShouldResolveExternalEntities:NO];
+    [parser parse];
+//    PartOfNews *news = [[PartOfNews alloc] init];
+//    news = self.news;
+    return feeds;
+}
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary<NSString *,NSString *> *)attributeDict{
     
@@ -38,14 +50,7 @@
     }
     if ([element isEqualToString:@"enclosure"]){
         NSString *urlString = [attributeDict objectForKey:@"url"];
-        //NSLog(@"The url of image is %@",urlString);
         [imageLink appendString:urlString];
-        //NSLog(@"imageLink - %@",imageLink);
-        //NSLog(@"urlString -  %@",urlString);
-    }
-    if ([element isEqualToString:@"media:content"]){
-        NSString *urlString = [attributeDict objectForKey:@"url"];
-        //NSLog(@"%@",urlString);
     }
 }
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
@@ -53,7 +58,7 @@
         [title appendString:string];
     } else if ([element isEqualToString:@"link"]){
         [link appendString:string];
-        //NSLog(@"%@",link);
+        //NSLog(@"THE LINK IS %@",link);
         //    } else if ([element isEqualToString:@"description"]){
         //        [imageLink appendString:string];
         //NSLog(@"%@",imageLink);
@@ -72,9 +77,10 @@
         [item setObject:link forKey:@"link"];
         [item setObject:dates forKey:@"dates"];
         [item setObject:imageLink forKey:@"imageLink"];
-        //NSLog(@"%@",item);
+        
         
         PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
+        //self.news = news;
         [feeds addObject:news];
         
     }

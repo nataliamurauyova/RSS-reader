@@ -16,7 +16,6 @@
 		EA4C79682105E942005A0459 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA4C79662105E942005A0459 /* LaunchScreen.storyboard */; };
 		EA4C796B2105E942005A0459 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4C796A2105E942005A0459 /* main.m */; };
 		EA4C79C021060E51005A0459 /* ListOfNews.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4C79BF21060E51005A0459 /* ListOfNews.m */; };
-		EA642961210B272E00EC8B54 /* ImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = EA642960210B272E00EC8B54 /* ImageDownloader.m */; };
 		EA6723D921071427008A2BAF /* NewsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6723D821071427008A2BAF /* NewsDetailViewController.m */; };
 		EA672402210746FF008A2BAF /* HTML-parser.m in Sources */ = {isa = PBXBuildFile; fileRef = EA672401210746FF008A2BAF /* HTML-parser.m */; };
 		EA67240721077AC8008A2BAF /* XMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = EA67240621077AC8008A2BAF /* XMLParser.m */; };
@@ -41,8 +40,6 @@
 		EA4C796A2105E942005A0459 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA4C79BE21060E51005A0459 /* ListOfNews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListOfNews.h; sourceTree = "<group>"; };
 		EA4C79BF21060E51005A0459 /* ListOfNews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListOfNews.m; sourceTree = "<group>"; };
-		EA64295F210B272E00EC8B54 /* ImageDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageDownloader.h; sourceTree = "<group>"; };
-		EA642960210B272E00EC8B54 /* ImageDownloader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageDownloader.m; sourceTree = "<group>"; };
 		EA6723D721071427008A2BAF /* NewsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewsDetailViewController.h; sourceTree = "<group>"; };
 		EA6723D821071427008A2BAF /* NewsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewsDetailViewController.m; sourceTree = "<group>"; };
 		EA672400210746FF008A2BAF /* HTML-parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HTML-parser.h"; sourceTree = "<group>"; };
@@ -85,6 +82,8 @@
 		EA4C79572105E942005A0459 /* RSS-reader */ = {
 			isa = PBXGroup;
 			children = (
+				EA57C3D921105D3D00A765C8 /* Categories */,
+				EA57C3D821105D2800A765C8 /* Cells */,
 				EA6ACB2E210A17BF00061F0F /* Modals */,
 				EA6723DA21071477008A2BAF /* Controllers */,
 				EA4C79582105E942005A0459 /* AppDelegate.h */,
@@ -94,18 +93,26 @@
 				EA4C79692105E942005A0459 /* Info.plist */,
 				EA4C796A2105E942005A0459 /* main.m */,
 				EA4C79612105E942005A0459 /* RSS_reader.xcdatamodeld */,
-				EA67240521077AC8008A2BAF /* XMLParser.h */,
-				EA67240621077AC8008A2BAF /* XMLParser.m */,
+			);
+			path = "RSS-reader";
+			sourceTree = "<group>";
+		};
+		EA57C3D821105D2800A765C8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
 				EA47057521088E70009AC97F /* ListOfNewsTableViewCell.h */,
 				EA47057621088E70009AC97F /* ListOfNewsTableViewCell.m */,
-				EA6ACB2B210A166700061F0F /* PartOfNews.h */,
-				EA6ACB2C210A166700061F0F /* PartOfNews.m */,
-				EA64295F210B272E00EC8B54 /* ImageDownloader.h */,
-				EA642960210B272E00EC8B54 /* ImageDownloader.m */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		EA57C3D921105D3D00A765C8 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
 				EA0FD884210F71D700B6C590 /* NSString + NSStringAddition.h */,
 				EA0FD885210F71D700B6C590 /* NSString + NSStringAddition.m */,
 			);
-			path = "RSS-reader";
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		EA6723DA21071477008A2BAF /* Controllers */ = {
@@ -117,8 +124,6 @@
 				EA4C79BF21060E51005A0459 /* ListOfNews.m */,
 				EA4C795B2105E942005A0459 /* ViewController.h */,
 				EA4C795C2105E942005A0459 /* ViewController.m */,
-				EA672400210746FF008A2BAF /* HTML-parser.h */,
-				EA672401210746FF008A2BAF /* HTML-parser.m */,
 				EA6ACB28210A05C600061F0F /* FavoritesViewController.h */,
 				EA6ACB29210A05C600061F0F /* FavoritesViewController.m */,
 			);
@@ -128,6 +133,12 @@
 		EA6ACB2E210A17BF00061F0F /* Modals */ = {
 			isa = PBXGroup;
 			children = (
+				EA67240521077AC8008A2BAF /* XMLParser.h */,
+				EA67240621077AC8008A2BAF /* XMLParser.m */,
+				EA672400210746FF008A2BAF /* HTML-parser.h */,
+				EA672401210746FF008A2BAF /* HTML-parser.m */,
+				EA6ACB2B210A166700061F0F /* PartOfNews.h */,
+				EA6ACB2C210A166700061F0F /* PartOfNews.m */,
 			);
 			path = Modals;
 			sourceTree = "<group>";
@@ -207,7 +218,6 @@
 				EA4C79C021060E51005A0459 /* ListOfNews.m in Sources */,
 				EA4C795D2105E942005A0459 /* ViewController.m in Sources */,
 				EA4C79632105E942005A0459 /* RSS_reader.xcdatamodeld in Sources */,
-				EA642961210B272E00EC8B54 /* ImageDownloader.m in Sources */,
 				EA67240721077AC8008A2BAF /* XMLParser.m in Sources */,
 				EA4C796B2105E942005A0459 /* main.m in Sources */,
 				EA47057721088E70009AC97F /* ListOfNewsTableViewCell.m in Sources */,

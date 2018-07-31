@@ -11,17 +11,15 @@
 #import "HTML-parser.h"
 
 static NSString* const kCellIdentifier = @"Cell";
-static NSString *const begin = @"<ul class=\"b-lists\"><li class=\"lists__li\">";
-static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
+
 
 @interface ViewController ()
-@property(nonatomic) UITableView *tableView;
+
 @property (nonatomic) NSMutableArray *dataSource;
 @property(nonatomic) NSMutableArray *urlsForParsing;
-@property(assign,nonatomic) BOOL flag;
 @property(strong,nonatomic) NSURL* destinationURL;
 @property(strong,nonatomic) NSArray* result;
-@property(strong,nonatomic) NSArray* resultRSS;
+
 
 @end
 
@@ -39,7 +37,12 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
     }
     return _dataSource;
 }
-
+//-(NSMutableArray*)dataSource{
+//    if(!_dataSource){
+//        _dataSource = [[NSMutableArray alloc] init];
+//    }
+//    return _dataSource;
+//}
 -(NSMutableArray*)urlsForParsing{
     if(!_urlsForParsing){
         _urlsForParsing = [[NSMutableArray alloc] init];
@@ -52,12 +55,17 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
     
     self.title = @"Категории";
     
-    UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(barButtonLeft:)];
+    UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
     self.navigationItem.leftBarButtonItem = settings;
     HTML_parser* parser= [[HTML_parser alloc] init];
-    [parser doURLSession:^(NSMutableArray *destinationUrl) {
-        self.urlsForParsing = destinationUrl;
+
+    [parser getUrlsForParsing:^(NSMutableArray *parseURLs) {
+        self.urlsForParsing = parseURLs;
     }];
+//    [parser getChannelsForParsing:^(NSMutableArray *parseURLs) {
+//        self.dataSource = parseURLs;
+//        NSLog(@"Data Sourse - %@",self.dataSource);
+//    }];
 
     
     self.tableView.delegate = self;
@@ -88,8 +96,9 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 1;
+    return 2;
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.dataSource count];
 }
@@ -99,14 +108,22 @@ static NSString *const end = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
     if([self.dataSource count] > indexPath.row){
         cell.textLabel.text = self.dataSource[indexPath.row];
     }
+    cell.layer.borderWidth = 0.2;
     return cell;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50.0;
+}
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return @"Новости по рубрикам";
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
    
     ListOfNews *news = [[ListOfNews alloc] init];
-    self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
+    //self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
+    news.url = self.urlsForParsing[indexPath.row];
 
     
     [self.navigationController pushViewController:news animated:YES];

@@ -11,7 +11,7 @@
 
 @interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
 
-@property(nonatomic) NSArray *res;
+@property(nonatomic) UITableView *tableView;
 
 @end
 
