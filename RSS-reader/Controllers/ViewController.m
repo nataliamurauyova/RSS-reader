@@ -9,8 +9,12 @@
 #import "ViewController.h"
 #import "ListOfNews.h"
 #import "HTML-parser.h"
+#import "DownLoader.h"
+#import "PopoverViewController.h"
 
 static NSString* const kCellIdentifier = @"Cell";
+static NSString* const kHControllerTitle = @"Категории";
+static NSString* const kHeaderName = @"Новости по рубрикам";
 
 
 @interface ViewController ()
@@ -37,68 +41,60 @@ static NSString* const kCellIdentifier = @"Cell";
     }
     return _dataSource;
 }
-//-(NSMutableArray*)dataSource{
-//    if(!_dataSource){
-//        _dataSource = [[NSMutableArray alloc] init];
-//    }
-//    return _dataSource;
-//}
+
 -(NSMutableArray*)urlsForParsing{
     if(!_urlsForParsing){
         _urlsForParsing = [[NSMutableArray alloc] init];
     }
     return _urlsForParsing;
 }
--(NSMutableArray*)sections{
-    if(!_sections){
-        _sections = [NSMutableArray arrayWithObjects:@"Новости по рубрикам", @"Новости регионов",@"Новости REALTY.TUT.BY",@"Новости SPORT.TUT.BY",@"Новости AUTO.TUT.BY",@"Новости LADY.TUT.BY",@"Новости 42.TUT.BY",@"Новости TVSET.TUT.BY",nil];
-    }
-    return _sections;
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Категории";
+    self.title = kHControllerTitle;
     
-    UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:nil];
+    
+    UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(popoverPressed:)];
     self.navigationItem.leftBarButtonItem = settings;
     HTML_parser* parser= [[HTML_parser alloc] init];
 
     [parser getUrlsForParsing:^(NSMutableArray *parseURLs) {
         self.urlsForParsing = parseURLs;
     }];
-//    [parser getChannelsForParsing:^(NSMutableArray *parseURLs) {
-//        self.dataSource = parseURLs;
-//        NSLog(@"Data Sourse - %@",self.dataSource);
-//    }];
 
-    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     [self.view addSubview:self.tableView];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [NSLayoutConstraint activateConstraints:@[
-                                              [self.tableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
-                                              [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-                                              [self.tableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-                                              [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]
-                                              ]];
+    [self setConstraints];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellIdentifier];
     
    
 }
-//-(void)barButtonLeft:(UIBarButtonItem*) sender{
-//    UIPopoverPresentationController *popover = [self popoverPresentationController];
-//    popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-//    popover.delegate = self;
-//
-//    popover.sourceView = self.view;
-//    popover.sourceRect = CGRectMake(30, 50, 10, 10);
-//
-//}
+-(void)popoverPressed:(UIBarButtonItem*)sender{
+    PopoverViewController *vc = [[PopoverViewController alloc] init];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    UIPopoverPresentationController *popVC = vc.popoverPresentationController;
+    popVC.barButtonItem = sender;
+    popVC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popVC.delegate = self;
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller{
+    return UIModalPresentationNone;
+}
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style{
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
+    navController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:nil];
+    return navController;
+}
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -121,7 +117,7 @@ static NSString* const kCellIdentifier = @"Cell";
     return 50.0;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return @"Новости по рубрикам";
+    return kHeaderName;
 }
 
 #pragma mark - UITableViewDelegate
@@ -133,6 +129,16 @@ static NSString* const kCellIdentifier = @"Cell";
 
     
     [self.navigationController pushViewController:news animated:YES];
+}
+-(void) setConstraints{
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.tableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+                                              [self.tableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+                                              [self.tableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+                                              [self.tableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]
+                                              ]];
 }
 
 

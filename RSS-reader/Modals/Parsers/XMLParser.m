@@ -8,6 +8,19 @@
 
 #import "XMLParser.h"
 #import "PartOfNews.h"
+#import "NSString + NSStringAddition.h"
+
+static NSString* const kXMLTagItem = @"item";
+static NSString* const kXMLTagTitle = @"title";
+static NSString* const kXMLTagDate = @"pubDate";
+static NSString* const kXMLTagLink = @"link";
+static NSString* const kXMLTagEnclosure = @"enclosure";
+static NSString* const kXMLTagDescription = @"description";
+//static NSString* const kXMLTagDescriptionStart = @"hspace="5" ";
+//static NSString* const kXMLTagDescriptionEnd = @"";
+
+
+
 
 @interface XMLParser () {
     NSXMLParser *parser;
@@ -17,6 +30,8 @@
     NSMutableString *link;
     NSMutableString *imageLink;
     NSMutableString *dates;
+    NSMutableString *descriptionBeforeParsing;
+    NSMutableString *description;
     NSDate *pubDate;
     NSString *element;
 }
@@ -39,32 +54,39 @@
     
     element=elementName;
     
-    if([element isEqualToString:@"item"]){
+    if([element isEqualToString:kXMLTagItem]){
         item = [[NSMutableDictionary alloc] init];
         title = [[NSMutableString alloc] init];
         link = [[NSMutableString alloc] init];
         imageLink = [[NSMutableString alloc] init];
         dates = [[NSMutableString alloc] init];
         pubDate = [[NSDate alloc] init];
+        descriptionBeforeParsing = [[NSMutableString alloc] init];
+        description = [[NSMutableString alloc] init];
     }
-    if ([element isEqualToString:@"enclosure"]){
+    if ([element isEqualToString:kXMLTagEnclosure]){
         NSString *urlString = [attributeDict objectForKey:@"url"];
         [imageLink appendString:urlString];
     }
 }
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string{
-    if([element isEqualToString:@"title"]){
+    if([element isEqualToString:kXMLTagTitle]){
         [title appendString:string];
-    } else if ([element isEqualToString:@"link"]){
+    } else if ([element isEqualToString:kXMLTagLink]){
         [link appendString:string];
-        //NSLog(@"THE LINK IS %@",link);
-        //    } else if ([element isEqualToString:@"description"]){
-        //        [imageLink appendString:string];
-        //NSLog(@"%@",imageLink);
-    } else if ([element isEqualToString:@"pubDate"]){
-        //        if ([element isEqualToString:@"img"]) {
+    } else if ([element isEqualToString:kXMLTagDate]){
         [dates appendString:string];
-        //    }
+    } else if ([element isEqualToString:kXMLTagDescription]){
+        [descriptionBeforeParsing appendString:string];
+        //NSLog(@"DESCRRRRRR - %@",description);
+        NSMutableArray *descrip = [descriptionBeforeParsing stringsBetweenString:@">" andString:@"<br "];
+        //NSLog(@"DESCRRRRRR - %@",descr);
+        description = [[descrip componentsJoinedByString:@" "] mutableCopy];
+        //NSLog(@"DESCRRRRRR - %@",description);
+        //description = [descr ]
+        
+//        NSString *str = [[description stringsBetweenString:@">" andString:@"<br "] mutableCopy];
+//        NSLog(@"DESCRRRRRR - %@",str);
     }
 }
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
@@ -73,10 +95,15 @@
         [item setObject:link forKey:@"link"];
         [item setObject:dates forKey:@"dates"];
         [item setObject:imageLink forKey:@"imageLink"];
+        [item setObject:description forKey:@"description"];
+        //NSLog(@"Item is %@",item);
         
         
-        PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
+        //PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
+        PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink subtitle:description];
+//        NSLog(@"news - %@",news);
         [feeds addObject:news];
+       
         
     }
 }

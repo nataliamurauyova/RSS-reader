@@ -13,6 +13,7 @@
 @property(strong,nonatomic) NSString *link;
 @property(strong,nonatomic) NSString *pubDate;
 @property(strong,nonatomic) NSString *imageLink;
+@property(strong,nonatomic) NSString *subtitle;
 
--(instancetype)initWithTitle:(NSString*)title link:(NSString*)link pubDate:(NSString*)pubdate imageLink:(NSString*)imageLink;
+-(instancetype)initWithTitle:(NSString*)title link:(NSString*)link pubDate:(NSString*)pubDate imageLink:(NSString*)imageLink subtitle:(NSString*)subtitle;
 @end

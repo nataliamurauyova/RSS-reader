@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 
-@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
+@interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate,UIAdaptivePresentationControllerDelegate>
 
 @property(nonatomic) UITableView *tableView;
+@property(assign,nonatomic) BOOL *isMarked;
+@property(nonatomic) NSMutableArray* allChannels;
 
 @end
 

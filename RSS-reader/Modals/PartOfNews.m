@@ -9,16 +9,17 @@
 #import "PartOfNews.h"
 
 @implementation PartOfNews
-
--(instancetype)initWithTitle:(NSString *)title link:(NSString *)link pubDate:(NSString *)pubDate imageLink:(NSString *)imageLink{
+- (instancetype)initWithTitle:(NSString *)title link:(NSString *)link pubDate:(NSString *)pubDate imageLink:(NSString *)imageLink subtitle:(NSString*)subtitle{
     self = [super init];
     if(self){
         self.title = title;
         self.link = link;
         self.pubDate = pubDate;
         self.imageLink = imageLink;
-}
+        self.subtitle = subtitle;
+    }
     return self;
 }
+
 
 @end

@@ -13,7 +13,11 @@
 #import "AppDelegate.h"
 #import "FavoritesViewController.h"
 #import "XMLParser.h"
+#import "DownLoader.h"
+#import "DetailNewsViewController.h"
 
+static NSString* const kCellIdentifier = @"Cell";
+static NSString* const kControllerTitle = @"Новости";
 static NSString* const kEntityName = @"Favourites";
 static NSString* const kAttributeLinkName = @"link";
 static NSString* const kAttributeTitleName = @"title";
@@ -49,47 +53,26 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Новости";
+    self.title = kControllerTitle;
     
-        
-
-
+    NSLog(@"imageDestination - %@",self.imageDestination);
+    
     UIBarButtonItem *bookmark = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(bookmarkClicked)];
   
-    
     self.navigationItem.rightBarButtonItem = bookmark;
-    
     
     self.rssTableView.delegate = self;
     self.rssTableView.dataSource = self;
     
     [self.view addSubview:self.rssTableView];
-    self.rssTableView.translatesAutoresizingMaskIntoConstraints = NO;
-    
-    [NSLayoutConstraint activateConstraints:@[
-                                              [self.rssTableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
-                                              [self.rssTableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
-                                              [self.rssTableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
-                                              [self.rssTableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]
-                                              ]];
-//    NSLog(@"%@",self.url);
-//    feeds = [[NSMutableArray alloc] init];
-//    NSURL *url = [NSURL URLWithString:self.url];
-//    parser = [[NSXMLParser alloc] initWithContentsOfURL:url];
-//
-//    [parser setDelegate:self];
-//    [parser setShouldResolveExternalEntities:NO];
-//    [parser parse];
+    [self setConstraints];
+
     XMLParser *xmlparser = [[XMLParser alloc] init];
     self.feeds = [xmlparser parseXML:self.url];
-
-    //NSLog(@"self.feeds %@",[self.feeds objectAtIndex:1]);
-        //self.news = [xmlparser parseXML:self.url];
 }
 
 -(void)bookmarkClicked{
     FavoritesViewController *fav = [[FavoritesViewController alloc] init];
-    
     [self.navigationController pushViewController:fav animated:YES];
 }
 
@@ -100,21 +83,14 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     return self.feeds.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
     
     self.news = [self.feeds objectAtIndex:indexPath.row];
     
-//    NSLog(@"Object is %@",self.news);
-    //NSLog(@"link is %@", self.news.link);
-    
     if(cell == nil){
-        cell = [[ListOfNewsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell"];
+        cell = [[ListOfNewsTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier];
     }
-    
-    
-    //NSLog(@"%@",self.news.pubDate);
     NSString *formattedString = [self.news.pubDate substringWithRange:NSMakeRange(4, 18)];
-    //NSLog(@"%@",formattedString);
     cell.textLabel.text = self.news.title;
     cell.detailTextLabel.text = formattedString;
 
@@ -129,28 +105,22 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     [self.star setImage:[UIImage imageNamed:@"fav1.png"] forState:UIControlStateNormal];
     [self.star addTarget:self action:@selector(handleMarkAsFavourite:) forControlEvents:UIControlEventTouchUpInside];
     cell.accessoryView = self.star;
-
-    //image loading
-    NSString *imageUrl = self.news.imageLink;
-    if(imageUrl){
-        cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                    NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-                    UIImage *image = [[UIImage alloc] initWithData:imageData];
-                    dispatch_sync(dispatch_get_main_queue(), ^{
-                        cell.imageView.image = image;
-                        [cell setNeedsLayout];
-                    });
-                });
-    }
-
+    
+    cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+    DownLoader *imgDownloader = [[DownLoader alloc] init];
+    [imgDownloader loadURL:self.news.imageLink :^(NSString *imageDestination) {
+        self.imageDestination = imageDestination;
+        UIImage *image = [UIImage imageWithContentsOfFile:self.imageDestination];
+        cell.imageView.image = image;
+        [cell setNeedsLayout];
+    }];
     return cell;
 }
 
 
 
 -(void)handleMarkAsFavourite:(UIButton*)sender {
+    [sender setTintColor:[UIColor yellowColor]];
 
     self.news = [self.feeds objectAtIndex:sender.tag];
 
@@ -169,10 +139,26 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NewsDetailViewController *newsDetailController = [[NewsDetailViewController alloc] init];
-    newsDetailController.linkToDownload = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"link"];
-    //NSLog(@"%@",self.news.link);
-    [self.navigationController pushViewController:newsDetailController animated:YES];
+
+    DetailNewsViewController *detailVC = [[DetailNewsViewController alloc] init];
+    detailVC.titleOfNews = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"title"];
+    detailVC.subtitle = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"subtitle"];
+    
+    detailVC.pubDate = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"pubDate"];
+    detailVC.link = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"link"];
+    detailVC.mediaDestination = self.imageDestination;
+    NSLog(@"imageDestination - %@",self.imageDestination);
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
+-(void)setConstraints{
+    self.rssTableView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [NSLayoutConstraint activateConstraints:@[
+                                              [self.rssTableView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor],
+                                              [self.rssTableView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor],
+                                              [self.rssTableView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor],
+                                              [self.rssTableView.bottomAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.bottomAnchor]
+                                              ]];
 }
 
 @end

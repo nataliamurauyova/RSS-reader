@@ -12,6 +12,7 @@
 #import "NewsDetailViewController.h"
 #import "ListOfNews.h"
 #import "ListOfNewsTableViewCell.h"
+#import "DownLoader.h"
 
 static NSString* const kEntityName = @"Favourites";
 
@@ -72,18 +73,13 @@ static NSString* const kEntityName = @"Favourites";
     cell.textLabel.text = [partOfNews valueForKey:@"title"];
     cell.detailTextLabel.text = [[partOfNews valueForKey:@"pubDate"] substringWithRange:NSMakeRange(4, 18)];
     
-    NSString *imageUrl = [partOfNews valueForKey:@"imageLink"];
-    if(imageUrl){
-        cell.imageView.image = nil;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:imageUrl]];
-            UIImage *image = [[UIImage alloc] initWithData:imageData];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                cell.imageView.image = image;
-                [cell setNeedsLayout];
-            });
-        });
-    }
+    cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
+    DownLoader *imgDownloader = [[DownLoader alloc] init];
+    [imgDownloader loadURL:[partOfNews valueForKey:@"imageLink"] :^(NSString *imageDestination) {
+        UIImage *image = [UIImage imageWithContentsOfFile:imageDestination];
+        cell.imageView.image = image;
+        [cell setNeedsLayout];
+    }];
     return cell;
 }
     
@@ -116,7 +112,7 @@ static NSString* const kEntityName = @"Favourites";
         }
         [self.news removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        ListOfNews *vc = [[ListOfNews alloc] init];
+ 
         
     }
 }

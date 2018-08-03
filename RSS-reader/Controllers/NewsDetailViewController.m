@@ -37,45 +37,7 @@
     [webView loadRequest:request];
     
 
-    loadingView = [[UIView alloc] init];
-    loadingView.backgroundColor = [UIColor colorWithWhite:0. alpha:0.6];
-    loadingView.layer.cornerRadius = 5;
-    [self.view addSubview:loadingView];
-    loadingView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-                                              [loadingView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
-                                              [loadingView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
-                                              [loadingView.widthAnchor constraintEqualToConstant:90],
-                                              [loadingView.heightAnchor constraintEqualToConstant:90]
-                                              ]];
-    
-    
-    UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    [loadingView addSubview:activityView];
-    activityView.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-                                              [activityView.centerXAnchor constraintEqualToAnchor:loadingView.centerXAnchor],
-                                              [activityView.centerYAnchor constraintEqualToAnchor:loadingView.centerYAnchor],
-                                              [activityView.widthAnchor constraintEqualToConstant:40],
-                                              [activityView.heightAnchor constraintEqualToConstant:40]
-                                              ]];
-    [activityView startAnimating];
- 
-  
-
-    UILabel* lblLoading = [[UILabel alloc]initWithFrame:CGRectMake(0, 48, 80, 30)];
-    lblLoading.text = @"Loading...";
-    lblLoading.textColor = [UIColor whiteColor];
-    lblLoading.font = [UIFont fontWithName:lblLoading.font.fontName size:15];
-    lblLoading.textAlignment = NSTextAlignmentCenter;
-    [loadingView addSubview:lblLoading];
-    lblLoading.translatesAutoresizingMaskIntoConstraints = NO;
-    [NSLayoutConstraint activateConstraints:@[
-                                              [lblLoading.bottomAnchor constraintEqualToAnchor:loadingView.bottomAnchor],
-                                              [lblLoading.leadingAnchor constraintEqualToAnchor:loadingView.leadingAnchor],
-                                              [lblLoading.trailingAnchor constraintEqualToAnchor:loadingView.trailingAnchor],
-                                              [lblLoading.heightAnchor constraintEqualToConstant:30]
-                                              ]];
+    [self addLoadingView];
 }
 
 -(void)webViewDidStartLoad:(UIWebView *)webView{
@@ -99,6 +61,49 @@
                                               ]];
     NSLog(@"Error - %@",[error localizedDescription]);
 }
-
+-(void)setConstraints{
+    
+}
+-(void) addLoadingView{
+    loadingView = [[UIView alloc] init];
+    loadingView.backgroundColor = [UIColor colorWithWhite:0. alpha:0.6];
+    loadingView.layer.cornerRadius = 5;
+    [self.view addSubview:loadingView];
+    loadingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [loadingView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor],
+                                              [loadingView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor],
+                                              [loadingView.widthAnchor constraintEqualToConstant:90],
+                                              [loadingView.heightAnchor constraintEqualToConstant:90]
+                                              ]];
+    
+    
+    UIActivityIndicatorView *activityView=[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    [loadingView addSubview:activityView];
+    activityView.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [activityView.centerXAnchor constraintEqualToAnchor:loadingView.centerXAnchor],
+                                              [activityView.centerYAnchor constraintEqualToAnchor:loadingView.centerYAnchor],
+                                              [activityView.widthAnchor constraintEqualToConstant:40],
+                                              [activityView.heightAnchor constraintEqualToConstant:40]
+                                              ]];
+    [activityView startAnimating];
+    
+    
+    
+    UILabel* lblLoading = [[UILabel alloc]initWithFrame:CGRectMake(0, 48, 80, 30)];
+    lblLoading.text = @"Loading...";
+    lblLoading.textColor = [UIColor whiteColor];
+    lblLoading.font = [UIFont fontWithName:lblLoading.font.fontName size:15];
+    lblLoading.textAlignment = NSTextAlignmentCenter;
+    [loadingView addSubview:lblLoading];
+    lblLoading.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+                                              [lblLoading.bottomAnchor constraintEqualToAnchor:loadingView.bottomAnchor],
+                                              [lblLoading.leadingAnchor constraintEqualToAnchor:loadingView.leadingAnchor],
+                                              [lblLoading.trailingAnchor constraintEqualToAnchor:loadingView.trailingAnchor],
+                                              [lblLoading.heightAnchor constraintEqualToConstant:30]
+                                              ]];
+}
 
 @end

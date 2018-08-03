@@ -16,11 +16,15 @@
 		EA4C79682105E942005A0459 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA4C79662105E942005A0459 /* LaunchScreen.storyboard */; };
 		EA4C796B2105E942005A0459 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4C796A2105E942005A0459 /* main.m */; };
 		EA4C79C021060E51005A0459 /* ListOfNews.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4C79BF21060E51005A0459 /* ListOfNews.m */; };
+		EA54DDC32111CBC0004A1DED /* DownLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = EA54DDC22111CBC0004A1DED /* DownLoader.m */; };
 		EA6723D921071427008A2BAF /* NewsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6723D821071427008A2BAF /* NewsDetailViewController.m */; };
 		EA672402210746FF008A2BAF /* HTML-parser.m in Sources */ = {isa = PBXBuildFile; fileRef = EA672401210746FF008A2BAF /* HTML-parser.m */; };
 		EA67240721077AC8008A2BAF /* XMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = EA67240621077AC8008A2BAF /* XMLParser.m */; };
+		EA6AA53E2112FF4100414D67 /* PopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AA53D2112FF4100414D67 /* PopoverViewController.m */; };
+		EA6AA541211313C900414D67 /* Channel.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6AA540211313C900414D67 /* Channel.m */; };
 		EA6ACB2A210A05C600061F0F /* FavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6ACB29210A05C600061F0F /* FavoritesViewController.m */; };
 		EA6ACB2D210A166700061F0F /* PartOfNews.m in Sources */ = {isa = PBXBuildFile; fileRef = EA6ACB2C210A166700061F0F /* PartOfNews.m */; };
+		EA8476E12114586B00580CFA /* DetailNewsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA8476E02114586B00580CFA /* DetailNewsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,16 +44,24 @@
 		EA4C796A2105E942005A0459 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA4C79BE21060E51005A0459 /* ListOfNews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ListOfNews.h; sourceTree = "<group>"; };
 		EA4C79BF21060E51005A0459 /* ListOfNews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ListOfNews.m; sourceTree = "<group>"; };
+		EA54DDC12111CBC0004A1DED /* DownLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownLoader.h; sourceTree = "<group>"; };
+		EA54DDC22111CBC0004A1DED /* DownLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownLoader.m; sourceTree = "<group>"; };
 		EA6723D721071427008A2BAF /* NewsDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewsDetailViewController.h; sourceTree = "<group>"; };
 		EA6723D821071427008A2BAF /* NewsDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NewsDetailViewController.m; sourceTree = "<group>"; };
 		EA672400210746FF008A2BAF /* HTML-parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HTML-parser.h"; sourceTree = "<group>"; };
 		EA672401210746FF008A2BAF /* HTML-parser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "HTML-parser.m"; sourceTree = "<group>"; };
 		EA67240521077AC8008A2BAF /* XMLParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XMLParser.h; sourceTree = "<group>"; };
 		EA67240621077AC8008A2BAF /* XMLParser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XMLParser.m; sourceTree = "<group>"; };
+		EA6AA53C2112FF4100414D67 /* PopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopoverViewController.h; sourceTree = "<group>"; };
+		EA6AA53D2112FF4100414D67 /* PopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopoverViewController.m; sourceTree = "<group>"; };
+		EA6AA53F211313C900414D67 /* Channel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Channel.h; sourceTree = "<group>"; };
+		EA6AA540211313C900414D67 /* Channel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Channel.m; sourceTree = "<group>"; };
 		EA6ACB28210A05C600061F0F /* FavoritesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FavoritesViewController.h; sourceTree = "<group>"; };
 		EA6ACB29210A05C600061F0F /* FavoritesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FavoritesViewController.m; sourceTree = "<group>"; };
 		EA6ACB2B210A166700061F0F /* PartOfNews.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PartOfNews.h; sourceTree = "<group>"; };
 		EA6ACB2C210A166700061F0F /* PartOfNews.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PartOfNews.m; sourceTree = "<group>"; };
+		EA8476DF2114586B00580CFA /* DetailNewsViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailNewsViewController.h; sourceTree = "<group>"; };
+		EA8476E02114586B00580CFA /* DetailNewsViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailNewsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +75,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA09A8C5211492E000B90FBC /* Support files */ = {
+			isa = PBXGroup;
+			children = (
+				EA4C79642105E942005A0459 /* Assets.xcassets */,
+				EA4C79592105E942005A0459 /* AppDelegate.m */,
+				EA4C79582105E942005A0459 /* AppDelegate.h */,
+				EA4C79662105E942005A0459 /* LaunchScreen.storyboard */,
+				EA4C796A2105E942005A0459 /* main.m */,
+			);
+			path = "Support files";
+			sourceTree = "<group>";
+		};
+		EA09A8C62114935400B90FBC /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+				EA672401210746FF008A2BAF /* HTML-parser.m */,
+				EA672400210746FF008A2BAF /* HTML-parser.h */,
+				EA67240621077AC8008A2BAF /* XMLParser.m */,
+				EA67240521077AC8008A2BAF /* XMLParser.h */,
+			);
+			path = Parsers;
+			sourceTree = "<group>";
+		};
 		EA4C794C2105E942005A0459 = {
 			isa = PBXGroup;
 			children = (
@@ -82,17 +117,13 @@
 		EA4C79572105E942005A0459 /* RSS-reader */ = {
 			isa = PBXGroup;
 			children = (
+				EA09A8C5211492E000B90FBC /* Support files */,
 				EA57C3D921105D3D00A765C8 /* Categories */,
 				EA57C3D821105D2800A765C8 /* Cells */,
 				EA6ACB2E210A17BF00061F0F /* Modals */,
 				EA6723DA21071477008A2BAF /* Controllers */,
-				EA4C79582105E942005A0459 /* AppDelegate.h */,
-				EA4C79592105E942005A0459 /* AppDelegate.m */,
-				EA4C79642105E942005A0459 /* Assets.xcassets */,
-				EA4C79662105E942005A0459 /* LaunchScreen.storyboard */,
-				EA4C79692105E942005A0459 /* Info.plist */,
-				EA4C796A2105E942005A0459 /* main.m */,
 				EA4C79612105E942005A0459 /* RSS_reader.xcdatamodeld */,
+				EA4C79692105E942005A0459 /* Info.plist */,
 			);
 			path = "RSS-reader";
 			sourceTree = "<group>";
@@ -126,6 +157,10 @@
 				EA4C795C2105E942005A0459 /* ViewController.m */,
 				EA6ACB28210A05C600061F0F /* FavoritesViewController.h */,
 				EA6ACB29210A05C600061F0F /* FavoritesViewController.m */,
+				EA6AA53C2112FF4100414D67 /* PopoverViewController.h */,
+				EA6AA53D2112FF4100414D67 /* PopoverViewController.m */,
+				EA8476DF2114586B00580CFA /* DetailNewsViewController.h */,
+				EA8476E02114586B00580CFA /* DetailNewsViewController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -133,12 +168,13 @@
 		EA6ACB2E210A17BF00061F0F /* Modals */ = {
 			isa = PBXGroup;
 			children = (
-				EA67240521077AC8008A2BAF /* XMLParser.h */,
-				EA67240621077AC8008A2BAF /* XMLParser.m */,
-				EA672400210746FF008A2BAF /* HTML-parser.h */,
-				EA672401210746FF008A2BAF /* HTML-parser.m */,
+				EA09A8C62114935400B90FBC /* Parsers */,
 				EA6ACB2B210A166700061F0F /* PartOfNews.h */,
 				EA6ACB2C210A166700061F0F /* PartOfNews.m */,
+				EA54DDC12111CBC0004A1DED /* DownLoader.h */,
+				EA54DDC22111CBC0004A1DED /* DownLoader.m */,
+				EA6AA53F211313C900414D67 /* Channel.h */,
+				EA6AA540211313C900414D67 /* Channel.m */,
 			);
 			path = Modals;
 			sourceTree = "<group>";
@@ -213,16 +249,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA6ACB2D210A166700061F0F /* PartOfNews.m in Sources */,
+				EA54DDC32111CBC0004A1DED /* DownLoader.m in Sources */,
 				EA6ACB2A210A05C600061F0F /* FavoritesViewController.m in Sources */,
 				EA672402210746FF008A2BAF /* HTML-parser.m in Sources */,
+				EA8476E12114586B00580CFA /* DetailNewsViewController.m in Sources */,
 				EA4C79C021060E51005A0459 /* ListOfNews.m in Sources */,
 				EA4C795D2105E942005A0459 /* ViewController.m in Sources */,
+				EA6AA53E2112FF4100414D67 /* PopoverViewController.m in Sources */,
 				EA4C79632105E942005A0459 /* RSS_reader.xcdatamodeld in Sources */,
 				EA67240721077AC8008A2BAF /* XMLParser.m in Sources */,
 				EA4C796B2105E942005A0459 /* main.m in Sources */,
 				EA47057721088E70009AC97F /* ListOfNewsTableViewCell.m in Sources */,
 				EA0FD886210F71D700B6C590 /* NSString + NSStringAddition.m in Sources */,
 				EA6723D921071427008A2BAF /* NewsDetailViewController.m in Sources */,
+				EA6AA541211313C900414D67 /* Channel.m in Sources */,
 				EA4C795A2105E942005A0459 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
