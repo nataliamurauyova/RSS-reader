@@ -16,4 +16,5 @@
 @property(nonatomic) NSString *mediaDestination;
 @property(nonatomic)NSMutableArray *mediaDestinationArr;
 @property(nonatomic) NSString *linkForImage;
+@property(nonatomic) NSString *linkForGestureRecogniser;
 @end
