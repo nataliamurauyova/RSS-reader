@@ -16,8 +16,8 @@ static NSString* const kXMLTagDate = @"pubDate";
 static NSString* const kXMLTagLink = @"link";
 static NSString* const kXMLTagEnclosure = @"enclosure";
 static NSString* const kXMLTagDescription = @"description";
-//static NSString* const kXMLTagDescriptionStart = @"hspace="5" ";
-//static NSString* const kXMLTagDescriptionEnd = @"";
+static NSString* const kXMLTagDescriptionStart = @">";
+static NSString* const kXMLTagDescriptionEnd = @"<br ";
 
 
 
@@ -78,15 +78,9 @@ static NSString* const kXMLTagDescription = @"description";
         [dates appendString:string];
     } else if ([element isEqualToString:kXMLTagDescription]){
         [descriptionBeforeParsing appendString:string];
-        //NSLog(@"DESCRRRRRR - %@",description);
-        NSMutableArray *descrip = [descriptionBeforeParsing stringsBetweenString:@">" andString:@"<br "];
-        //NSLog(@"DESCRRRRRR - %@",descr);
+        NSMutableArray *descrip = [descriptionBeforeParsing stringsBetweenString:kXMLTagDescriptionStart andString:kXMLTagDescriptionEnd];
         description = [[descrip componentsJoinedByString:@" "] mutableCopy];
-        //NSLog(@"DESCRRRRRR - %@",description);
-        //description = [descr ]
-        
-//        NSString *str = [[description stringsBetweenString:@">" andString:@"<br "] mutableCopy];
-//        NSLog(@"DESCRRRRRR - %@",str);
+
     }
 }
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName{
@@ -96,12 +90,7 @@ static NSString* const kXMLTagDescription = @"description";
         [item setObject:dates forKey:@"dates"];
         [item setObject:imageLink forKey:@"imageLink"];
         [item setObject:description forKey:@"description"];
-        //NSLog(@"Item is %@",item);
-        
-        
-        //PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink];
         PartOfNews *news = [[PartOfNews alloc] initWithTitle:title link:link pubDate:dates imageLink:imageLink subtitle:description];
-//        NSLog(@"news - %@",news);
         [feeds addObject:news];
        
         

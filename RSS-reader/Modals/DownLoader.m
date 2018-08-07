@@ -16,7 +16,6 @@ static NSString* const kHttpGETMethod = @"GET";
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
     self.session = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     self.downloadTask = [self.session downloadTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        //NSLog(@"Location - %@",location);
         NSFileManager *fileManager = [NSFileManager defaultManager];
         NSArray *urls = [fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
         NSURL *documentsDirectory = [urls objectAtIndex:0];
@@ -38,7 +37,6 @@ static NSString* const kHttpGETMethod = @"GET";
         }
         
         appDir =  [appDir stringByAppendingFormat:@"/%@",[[self.downloadTask response] suggestedFilename]];
-        //NSLog(@"appDir - %@",appDir);
         
         
         if([fileManager fileExistsAtPath:appDir]){

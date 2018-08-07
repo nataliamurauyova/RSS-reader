@@ -26,7 +26,6 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
 
 @interface ListOfNews (){
     NSXMLParser *parser;
-    //NSMutableArray *feeds;
     NSMutableDictionary *item;
     NSMutableString *title;
     NSMutableString *link;
@@ -46,6 +45,12 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     }
     return _rssTableView;
 }
+-(NSMutableArray*)imageFilePaths{
+    if(!_imageFilePaths){
+        _imageFilePaths = [[NSMutableArray alloc] init];
+    }
+    return _imageFilePaths;
+}
 -(NSManagedObjectContext*)managedObjectContext{
     AppDelegate *delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     return [delegate managedObjectContext];
@@ -55,7 +60,7 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     [super viewDidLoad];
     self.title = kControllerTitle;
     
-    NSLog(@"imageDestination - %@",self.imageDestination);
+
     
     UIBarButtonItem *bookmark = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(bookmarkClicked)];
   
@@ -109,7 +114,10 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     cell.imageView.image = [UIImage imageNamed:@"placeholder.png"];
     DownLoader *imgDownloader = [[DownLoader alloc] init];
     [imgDownloader loadURL:self.news.imageLink :^(NSString *imageDestination) {
+        //NSLog(@"imageDestination - %@",self.imageDestination);
         self.imageDestination = imageDestination;
+//        self->_imageFilePaths = [[self.imageDestination componentsSeparatedByString:@" "] mutableCopy];
+//        NSLog(@"testArr - %@",_imageFilePaths);
         UIImage *image = [UIImage imageWithContentsOfFile:self.imageDestination];
         cell.imageView.image = image;
         [cell setNeedsLayout];
@@ -146,8 +154,13 @@ static NSString* const kAttributeImageLinkName = @"imageLink";
     
     detailVC.pubDate = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"pubDate"];
     detailVC.link = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"link"];
+    
+    NSMutableArray *destination = [[self.imageDestination componentsSeparatedByString:@" "] mutableCopy];
+    NSLog(@"destination - %@ ",destination);
     detailVC.mediaDestination = self.imageDestination;
-    NSLog(@"imageDestination - %@",self.imageDestination);
+    //detailVC.mediaDestination = [destination objectAtIndex:indexPath.row];
+    detailVC.linkForImage = [[self.feeds objectAtIndex:indexPath.row] valueForKey:@"imageLink"];
+    //NSLog(@"imageDestination - %@",self.imageDestination);
     [self.navigationController pushViewController:detailVC animated:YES];
 }
 -(void)setConstraints{

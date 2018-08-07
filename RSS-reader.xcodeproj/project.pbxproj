@@ -79,8 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				EA4C79642105E942005A0459 /* Assets.xcassets */,
-				EA4C79592105E942005A0459 /* AppDelegate.m */,
 				EA4C79582105E942005A0459 /* AppDelegate.h */,
+				EA4C79592105E942005A0459 /* AppDelegate.m */,
 				EA4C79662105E942005A0459 /* LaunchScreen.storyboard */,
 				EA4C796A2105E942005A0459 /* main.m */,
 			);
@@ -90,10 +90,10 @@
 		EA09A8C62114935400B90FBC /* Parsers */ = {
 			isa = PBXGroup;
 			children = (
-				EA672401210746FF008A2BAF /* HTML-parser.m */,
 				EA672400210746FF008A2BAF /* HTML-parser.h */,
-				EA67240621077AC8008A2BAF /* XMLParser.m */,
+				EA672401210746FF008A2BAF /* HTML-parser.m */,
 				EA67240521077AC8008A2BAF /* XMLParser.h */,
+				EA67240621077AC8008A2BAF /* XMLParser.m */,
 			);
 			path = Parsers;
 			sourceTree = "<group>";
@@ -128,6 +128,60 @@
 			path = "RSS-reader";
 			sourceTree = "<group>";
 		};
+		EA50E3B821185FE3000B6140 /* CategoriesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA4C795B2105E942005A0459 /* ViewController.h */,
+				EA4C795C2105E942005A0459 /* ViewController.m */,
+			);
+			path = CategoriesViewController;
+			sourceTree = "<group>";
+		};
+		EA50E3B921185FFF000B6140 /* ListOfNewsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA4C79BE21060E51005A0459 /* ListOfNews.h */,
+				EA4C79BF21060E51005A0459 /* ListOfNews.m */,
+			);
+			path = ListOfNewsViewController;
+			sourceTree = "<group>";
+		};
+		EA50E3BA2118601A000B6140 /* FavouritesViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA6ACB28210A05C600061F0F /* FavoritesViewController.h */,
+				EA6ACB29210A05C600061F0F /* FavoritesViewController.m */,
+			);
+			path = FavouritesViewController;
+			sourceTree = "<group>";
+		};
+		EA50E3BB2118603F000B6140 /* WebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA6723D721071427008A2BAF /* NewsDetailViewController.h */,
+				EA6723D821071427008A2BAF /* NewsDetailViewController.m */,
+			);
+			path = WebViewController;
+			sourceTree = "<group>";
+		};
+		EA50E3BC21186053000B6140 /* PopoverViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA6AA53C2112FF4100414D67 /* PopoverViewController.h */,
+				EA6AA53D2112FF4100414D67 /* PopoverViewController.m */,
+			);
+			path = PopoverViewController;
+			sourceTree = "<group>";
+		};
+		EA50E3BD21186070000B6140 /* DetailedViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA8476DF2114586B00580CFA /* DetailNewsViewController.h */,
+				EA8476E02114586B00580CFA /* DetailNewsViewController.m */,
+			);
+			path = DetailedViewController;
+			sourceTree = "<group>";
+		};
 		EA57C3D821105D2800A765C8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,18 +203,12 @@
 		EA6723DA21071477008A2BAF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				EA6723D721071427008A2BAF /* NewsDetailViewController.h */,
-				EA6723D821071427008A2BAF /* NewsDetailViewController.m */,
-				EA4C79BE21060E51005A0459 /* ListOfNews.h */,
-				EA4C79BF21060E51005A0459 /* ListOfNews.m */,
-				EA4C795B2105E942005A0459 /* ViewController.h */,
-				EA4C795C2105E942005A0459 /* ViewController.m */,
-				EA6ACB28210A05C600061F0F /* FavoritesViewController.h */,
-				EA6ACB29210A05C600061F0F /* FavoritesViewController.m */,
-				EA6AA53C2112FF4100414D67 /* PopoverViewController.h */,
-				EA6AA53D2112FF4100414D67 /* PopoverViewController.m */,
-				EA8476DF2114586B00580CFA /* DetailNewsViewController.h */,
-				EA8476E02114586B00580CFA /* DetailNewsViewController.m */,
+				EA50E3BD21186070000B6140 /* DetailedViewController */,
+				EA50E3BC21186053000B6140 /* PopoverViewController */,
+				EA50E3BB2118603F000B6140 /* WebViewController */,
+				EA50E3BA2118601A000B6140 /* FavouritesViewController */,
+				EA50E3B921185FFF000B6140 /* ListOfNewsViewController */,
+				EA50E3B821185FE3000B6140 /* CategoriesViewController */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

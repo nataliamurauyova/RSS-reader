@@ -8,6 +8,11 @@
 
 #import "DetailNewsViewController.h"
 #import "NewsDetailViewController.h"
+#import "DownLoader.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <AVKit/AVKit.h>
+#import <AVFoundation/AVFoundation.h>
+
 
 @interface DetailNewsViewController ()
 @property(nonatomic) UILabel *titlelabel;
@@ -69,8 +74,11 @@
 }
 -(void) createImageView{
     _imageView = [[UIImageView alloc] init];
-    UIImage *image = [UIImage imageWithContentsOfFile:self.mediaDestination];
-    _imageView.image = image;
+    DownLoader *downloader = [[DownLoader alloc] init];
+    [downloader loadURL:self.linkForImage :^(NSString *imageDestination) {
+        UIImage *image = [UIImage imageWithContentsOfFile:imageDestination];
+        self->_imageView.image = image;
+    }];
     [self.containerView addSubview:_imageView];
 }
 -(void)createWebButton{

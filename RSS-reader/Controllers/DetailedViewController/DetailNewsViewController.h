@@ -14,4 +14,6 @@
 @property(nonatomic) NSString *pubDate;
 @property(nonatomic) NSString *link;
 @property(nonatomic) NSString *mediaDestination;
+@property(nonatomic)NSMutableArray *mediaDestinationArr;
+@property(nonatomic) NSString *linkForImage;
 @end

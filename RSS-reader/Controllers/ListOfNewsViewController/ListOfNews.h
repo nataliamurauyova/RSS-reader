@@ -17,4 +17,5 @@
 @property(nonatomic) PartOfNews* news;
 @property(nonatomic) UIButton *star;
 @property(nonatomic) NSString *imageDestination;
+@property(nonatomic) NSMutableArray *imageFilePaths;
 @end

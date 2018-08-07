@@ -14,7 +14,7 @@ static NSString* const kCellIdentifier = @"Cell";
 
 @interface PopoverViewController ()
 @property(strong, nonatomic) NSMutableArray *allChannels;
-@property(nonatomic) NSMutableArray *checkmarkStates;
+
 @end
 
 @implementation PopoverViewController
@@ -30,17 +30,10 @@ static NSString* const kCellIdentifier = @"Cell";
     }
     return _dataSource;
 }
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-//    NSString *stateChecked = [[NSUserDefaults standardUserDefaults] stringForKey:@"stateOfCheckmark"];
-    
-//    if([stateChecked compare:@"isChecked"] == NSOrderedSame) {
-//
-//    }
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //self.isChecked = false;
+    
     self.allChannels = [NSMutableArray array];
     self.checkmarkStates = [NSMutableArray array];
     
@@ -81,16 +74,25 @@ static NSString* const kCellIdentifier = @"Cell";
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+    if(cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellIdentifier];
+    }
     Channel *channel = self.allChannels[indexPath.row];
     
     cell.textLabel.text = channel.channelName;
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"stateOfCheckmark"]) {
-        NSLog(@"Yeees");
+    if([self getCheckedForIndex:indexPath.row] == YES){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        channel.isChecked = YES;
     } else {
-        NSLog(@"Nooo");
         cell.accessoryType = UITableViewCellAccessoryNone;
+        channel.isChecked = NO;
     }
+    if(channel.isChecked == YES){
+        [self.checkmarkStates addObject:channel.channelName];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:self.checkmarkStates] forKey:@"savedArray"];
+    NSLog(@"checkmarkStates - %@",self.checkmarkStates);
+    
     
     return cell;
 }
@@ -100,41 +102,37 @@ static NSString* const kCellIdentifier = @"Cell";
 
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    //self.channel = [self.allChannels objectAtIndex:indexPath.row];
-    //NSLog(@"Tap - %@",self.allChannels);
-    Channel *chan = [self.allChannels objectAtIndex:indexPath.row];
-//    NSString* stateChecked = @"isChecked";
-//    NSUserDefaults *userPref = [NSUserDefaults standardUserDefaults];
-    chan.isChecked = !chan.isChecked;
-    if(chan.isChecked){
+    
+    [self checkedCellAtIndex:indexPath.row];
+    
+    if([self getCheckedForIndex:indexPath.row] == YES){
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        [self.checkmarkStates addObject:chan];
-//        [userPref setObject:stateChecked forKey:@"stateOfCheckmark"];
-    } else{
+    } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
-        [self.checkmarkStates removeObject:chan];
-//        stateChecked = @"isNotChecked";
-//        [userPref setObject:stateChecked forKey:@"stateOfCheckmark"];
     }
-    NSLog(@"Set is %@",self.checkmarkStates );
-    
-    NSUserDefaults *userPref = [NSUserDefaults standardUserDefaults];
-    [userPref setBool:chan.isChecked forKey:@"stateOfCheckmark"];
-    
-//    NSData *checkedObjects = [NSKeyedArchiver archivedDataWithRootObject:self.checkmarkStates];
-//    [[NSUserDefaults standardUserDefaults] setObject:checkedObjects forKey:@"stateOfCheckmark"];
-//    NSUserDefaults *userPref = [NSUserDefaults standardUserDefaults];
-//    [userPref setObject:self.checkmarkStates forKey:@"stateOfCheckmark"];
-    
-    //NSString *stateOfCheckMark = [[NSUserDefaults standardUserDefaults] stringForKey:@"stateOfCheckmark"];
-    ViewController *vc = [[ViewController alloc] init];
-    vc.allChannels = self.allChannels;
-    //[self presentViewController:vc animated:YES completion:nil];
-    
+    NSLog(@"checkmarkStates from didSelectRowAtIndexPath - %@",self.checkmarkStates);
 
+
+    
 }
 -(void)cancel{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+-(NSString*)getKeyForIndex:(int)index{
+    return [NSString stringWithFormat:@"KEY%d",index];
+}
+-(BOOL)getCheckedForIndex:(int)index{
 
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:[self getKeyForIndex:index]] boolValue] == YES){
+        return YES;
+    } else {
+        return NO;
+    }
+}
+-(void)checkedCellAtIndex:(int)index{
+    BOOL boolChecked = [self getCheckedForIndex:index];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[NSNumber numberWithBool:!boolChecked] forKey:[self getKeyForIndex:index]];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 @end

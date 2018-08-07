@@ -14,6 +14,9 @@ static NSString *const kListBegin = @"<li class=\"lists__li lists__li_head\">";
 static NSString *const kListEnd = @"<i class=\"main-shd\"><i class=\"main-shd-i\">";
 static NSString* const kURLStart = @"a href=\"";
 static NSString* const kURLEnd = @"\">";
+static NSString* const kURLtutby = @"https://news.tut.by/rss.html";
+static NSString* const kHTTPMethodGet = @"GET";
+
 
 @interface HTML_parser()
 @property(assign,nonatomic) BOOL flag;
@@ -26,9 +29,9 @@ static NSString* const kURLEnd = @"\">";
 
 
 -(NSArray*) getUrlsForParsing:(void(^)(NSMutableArray *parseURLs))complition{
-    NSURL *url = [NSURL URLWithString:@"https://news.tut.by/rss.html"];
+    NSURL *url = [NSURL URLWithString:kURLtutby];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
+    [request setHTTPMethod:kHTTPMethodGet];
     
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
@@ -45,18 +48,15 @@ static NSString* const kURLEnd = @"\">";
         NSLog(@"%@", location);
         [fileManager copyItemAtURL:location toURL:destinationUrl error:&err];
         self.destinationURL = destinationUrl;
-        //NSLog(@"%@", self.destinationURL);
         NSData *data = [[NSData alloc] initWithContentsOfURL:destinationUrl];
         NSString *resStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSMutableArray *str = [resStr stringsBetweenString:kListBegin andString:kListEnd];
-        //NSLog(@"%@",str);
         NSString *strFromArr = [str componentsJoinedByString:@" "];
         self.result = [strFromArr stringsBetweenString:kURLStart andString:kURLEnd];
-        //NSLog(@"%@",self.result);
+
         
         complition(self.result);
         
-        //NSLog(@"%@",self.result);
     }];
     [dataTask resume];
     

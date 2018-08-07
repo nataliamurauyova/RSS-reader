@@ -35,12 +35,6 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
     }
     return _tableView;
 }
--(NSMutableArray*)dataSource{
-    if(!_dataSource){
-        _dataSource = [NSMutableArray arrayWithObjects:@"Главные новости недели",@"Деньги и власть",@"Общество",@"В мире",@"Кругозор",@"Происшествия",@"Финансы",@"Недвижимость",@"Спорт",@"Авто",@"Леди",@"42",@"Афиша",@"GO",@"Новости компаний", nil];
-    }
-    return _dataSource;
-}
 
 -(NSMutableArray*)urlsForParsing{
     if(!_urlsForParsing){
@@ -49,16 +43,26 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
     return _urlsForParsing;
 }
 
--(void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.title = kHControllerTitle;
     
+    NSUserDefaults *currentDefaults = [NSUserDefaults standardUserDefaults];
+    NSData *savedArray = [currentDefaults objectForKey:@"savedArray"];
+    if (savedArray != nil){
+        NSArray *oldArray = [NSKeyedUnarchiver unarchiveObjectWithData:savedArray];
+        NSLog(@"oldArray - %@",oldArray);
+        if(oldArray != nil){
+           NSMutableArray *someArray = [[NSMutableArray alloc] initWithArray:oldArray];
+            _dataSource = [[someArray subarrayWithRange:NSMakeRange(1, (someArray.count - 1))] mutableCopy];
+        
+        } else {
+            _dataSource = [[NSMutableArray alloc] init];
+        }
+    }
+    [self.tableView reloadData];
     
     UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(popoverPressed:)];
     self.navigationItem.leftBarButtonItem = settings;
@@ -79,6 +83,7 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
 }
 -(void)popoverPressed:(UIBarButtonItem*)sender{
     PopoverViewController *vc = [[PopoverViewController alloc] init];
+
     vc.modalPresentationStyle = UIModalPresentationPopover;
     UIPopoverPresentationController *popVC = vc.popoverPresentationController;
     popVC.barButtonItem = sender;
@@ -86,6 +91,7 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
     popVC.delegate = self;
     [self presentViewController:vc animated:YES completion:nil];
 }
+#pragma mark - UIPopoverPresentationControllerDelegate
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller{
     return UIModalPresentationNone;
@@ -93,6 +99,7 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
 - (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style{
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller.presentedViewController];
     navController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:nil];
+    
     return navController;
 }
 
@@ -127,7 +134,6 @@ static NSString* const kHeaderName = @"Новости по рубрикам";
     self.dataSource[indexPath.row] = self.urlsForParsing[indexPath.row];
     news.url = self.urlsForParsing[indexPath.row];
 
-    
     [self.navigationController pushViewController:news animated:YES];
 }
 -(void) setConstraints{

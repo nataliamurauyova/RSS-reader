@@ -14,5 +14,6 @@
 @property(nonatomic) Channel *channel;
 @property(nonatomic) NSMutableArray* dataSource;
 @property(assign) BOOL isChecked;
+@property(nonatomic) NSMutableArray *checkmarkStates;
 
 @end
