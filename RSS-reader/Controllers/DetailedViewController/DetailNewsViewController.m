@@ -76,9 +76,9 @@
     _imageView = [[UIImageView alloc] init];
     DownLoader *downloader = [[DownLoader alloc] init];
     [downloader loadURL:self.linkForImage :^(NSString *imageDestination) {
+        DetailNewsViewController *__weak weakSelf  =self;
         if([imageDestination containsString:@".mp4"]){
-            self.linkForGestureRecogniser = imageDestination;
-            self->_imageView.image = [UIImage imageNamed:@"VideoPlaceholder.png"];
+            weakSelf.imageView.image = [UIImage imageNamed:@"VideoPlaceholder.png"];
             AVPlayer *player = [[AVPlayer alloc] initWithURL:[NSURL URLWithString:imageDestination]];
             AVPlayerViewController *playerVC = [[AVPlayerViewController alloc] init];
             [self presentViewController:playerVC animated:YES completion:^{
@@ -88,7 +88,7 @@
             NSLog(@"It's a video");
         } else {
         UIImage *image = [UIImage imageWithContentsOfFile:imageDestination];
-        self->_imageView.image = image;
+        weakSelf.imageView.image = image;
         }
     }];
     [self.containerView addSubview:_imageView];
